@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>ethereum-qr-code demo advanced</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
+
+    <link href="assets/css/styles.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+                <a class="navbar-brand" href="#">ethereum-qr-code</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li role="presentation"><a href="demo-simple.html">Simple demo</a></li>
+                    <li role="presentation" class="active"><a href="demo-advanced.html">Advanced demo</a></li>
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="https://github.com/jibrelnetwork/ethereum-qr-code">View on Github</a></li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <div class="jumbotron">
+            <div id="ethereum-qr-code"></div>
+            <textarea id="resulting-string" placeholder="The resulting data will be placed here"></textarea>
+            <p id="error-string"></p>
+        </div>
+
+        <div class="row marketing">
+            <div class="col-lg-12">
+                <p>Configure all ethereum-qr-code  plugin features dynamicaly<br><a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=Create%20ethereum%20address%20QR%20code%20%20with%20ethereum-qr-code%20plugin">Tweet</a></p>
+                <h4>QR code demo input</h4>
+                <form>
+
+                    <div class="form-group">
+                        <label>Mode</label>
+                        <div class="radio">
+                            <label>
+                            <input type="radio" name="mode" class="qr-input-on-change" value="basic" checked>
+                            <strong>eth</strong> - default, sending ether
+                        </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="mode" class="qr-input-on-change" value="contract_function">
+                                <strong>function</strong> - call a contact function with custom parameters
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="mode" class="qr-input-on-change" value="erc20__transfer">
+                                <strong>erc20__transfer</strong> - contract function 'transfer(address to, uint value)' is called
+                            </label>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Addess, 0x... format</label>
+                        <input type="text" id="addess" placeholder="0x12345678901234567890" value="0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8" class="qr-input form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Amount, Number</label>
+                        <input type="text" id="amount" placeholder="e.g. 15" class="qr-input form-control">
+                    </div>
+                 
+                    <div class="form-group">
+                        <label>Gas, Number</label>
+                        <input type="text" id="gas" placeholder="e.g. 10000" class="qr-input form-control">
+                    </div>
+                    <hr>
+                    <div class="form-group type-dynamic type-erc20__transfer type-basic">
+                        <label>From, 0x... format</label>
+                        <input type="text" id="from" placeholder="0x12345678901234567890" class="qr-input form-control">
+                    </div>
+
+                    <div class="form-group type-dynamic type-contract_function">
+                        <label>functionSignature, valid JSON</label>
+                        <textarea id="functionSignature" placeholder="{'name': 'myMethod', args: [{'name':'bar', 'type': 'int'}]}" class="qr-input form-control"></textarea>
+                        <br>Example (copy to textarea):  <br><code>
+                            { <br>
+                               &nbsp;"name": "requestMoney",<br>
+                               &nbsp;"payable": false,<br>
+                               &nbsp;"args": [<br>
+                               &nbsp;&nbsp;{ "name": "to",<br>
+                               &nbsp;&nbsp;"type": "address" },<br>
+                               &nbsp;&nbsp;{ "name": "value",<br>
+                               &nbsp;&nbsp;"type": "uint" }<br>
+                               &nbsp;]<br>
+                               }<br>
+                       </code>
+                    </div>
+
+                    <div class="form-group type-dynamic type-erc20__transfer">
+                        <label>argsDefaults, valid JSON</label>
+                        <textarea id="argsDefaults" placeholder="[{'name':'bar', 'value': 42}]" class="qr-input form-control"></textarea>
+                        <br>Example (copy to textarea):  <br><code>
+                            [{<br>
+                            &nbsp;"name": "to",<br>
+                            &nbsp;"value": "0xtokensrecipient"<br>
+                            },<br>
+                            {<br>
+                            &nbsp;"name": "value",<br>
+                            &nbsp;"value": 1000000000000000000<br>
+                            }]<br>
+                        </code>
+                    </div>
+
+                    <div class="form-group type-dynamic type-basic">
+                        <label>Data to encode</label>
+                        <div class="radio">
+                            <label>
+                            <input type="radio" class="qr-input-on-change" name="toJSON" value="false" checked>
+                            Use as String
+                        </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" class="qr-input-on-change" name="toJSON" value="true">
+                                Convert  to JSON first
+                            </label>
+                        </div>
+                    </div>
+                    <hr>
+                     <div class="form-group">
+                        <label>QR code image size, px</label>
+                        <input type="text" id="size" placeholder="e.g. 256" class="qr-input form-control">
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+    <!-- /container -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="assets/js/ethereum-qr-code.min.js"></script>
+    <script src="assets/js/app-demo-advanced.js"></script>
+    <script src="assets/js/twitter-simple-button.js"></script>
+</body>
+
+</html>
